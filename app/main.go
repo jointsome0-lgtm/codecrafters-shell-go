@@ -18,6 +18,10 @@ func main() {
 			return
 		}
 
+		if command == "exit" {
+			return
+		}
+
 		fmt.Printf("%v: command not found\n", command)
 	}
 }

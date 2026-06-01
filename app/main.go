@@ -39,9 +39,7 @@ func main() {
 
 		if command == "exit" {
 			break
-		}
-
-		if command == "echo" {
+		} else if command == "echo" {
 			result := strings.Join(parts[1:], " ")
 			fmt.Println(result)
 		} else if command == "type" {
@@ -53,8 +51,17 @@ func main() {
 				fmt.Printf("%s: not found\n", parts[1])
 			}
 		} else if command == "pwd" {
-			wd, _ := os.Getwd()
+			wd, err := os.Getwd()
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 			fmt.Println(wd)
+		} else if command == "cd" {
+			err := os.Chdir(parts[1])
+			if err != nil {
+				fmt.Println(err)
+			}
 		} else if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
 			args := parts[1:]
 			c := exec.Command(command, args...)

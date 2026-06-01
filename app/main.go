@@ -60,7 +60,7 @@ func main() {
 		} else if command == "cd" {
 			err := os.Chdir(parts[1])
 			if err != nil {
-				fmt.Println(err)
+				fmt.Printf("cd: %s: No such file or directory\n", parts[1])
 			}
 		} else if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
 			args := parts[1:]

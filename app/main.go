@@ -54,7 +54,7 @@ func main() {
 		} else {
 			if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
 				args := parts[1:]
-				c := exec.Command(path, args...)
+				c := exec.Command(command, args...)
 				c.Stdin = os.Stdin
 				c.Stdout = os.Stdout
 				c.Stderr = os.Stderr

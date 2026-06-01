@@ -43,11 +43,9 @@ func main() {
 			result := strings.Join(parts[1:], " ")
 			fmt.Println(result)
 		} else if command == "type" {
-			path, err := exec.LookPath(parts[1])
-
 			if slices.Contains(commands, parts[1]) {
 				fmt.Printf("%s is a shell builtin\n", parts[1])
-			} else if err == nil {
+			} else if path, err := exec.LookPath(parts[1]); err == nil && path != "" {
 				fmt.Printf("%s is %s\n", parts[1], path)
 			} else {
 				fmt.Printf("%s: not found\n", parts[1])

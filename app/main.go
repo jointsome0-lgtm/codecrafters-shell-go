@@ -32,6 +32,7 @@ func main() {
 			"exit",
 			"echo",
 			"type",
+			"pwd",
 		}
 
 		command := strings.TrimSpace(parts[0])
@@ -51,17 +52,18 @@ func main() {
 			} else {
 				fmt.Printf("%s: not found\n", parts[1])
 			}
+		} else if command == "pwd" {
+			wd, _ := os.Getwd()
+			fmt.Println(wd)
+		} else if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
+			args := parts[1:]
+			c := exec.Command(command, args...)
+			c.Stdin = os.Stdin
+			c.Stdout = os.Stdout
+			c.Stderr = os.Stderr
+			c.Run()
 		} else {
-			if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
-				args := parts[1:]
-				c := exec.Command(command, args...)
-				c.Stdin = os.Stdin
-				c.Stdout = os.Stdout
-				c.Stderr = os.Stderr
-				c.Run()
-			} else {
-				fmt.Println(command + ": command not found")
-			}
+			fmt.Println(command + ": command not found")
 		}
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"slices"
 	"strings"
 )
@@ -12,6 +13,7 @@ var _ = fmt.Print
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		fmt.Print("$ ")
 
@@ -31,6 +33,7 @@ func main() {
 			"echo",
 			"type",
 		}
+
 		command := strings.TrimSpace(parts[0])
 		if command == "exit" {
 			break
@@ -40,8 +43,12 @@ func main() {
 			result := strings.Join(parts[1:], " ")
 			fmt.Println(result)
 		} else if command == "type" {
+			path, err := exec.LookPath(parts[1])
+
 			if slices.Contains(commands, parts[1]) {
 				fmt.Printf("%s is a shell builtin\n", parts[1])
+			} else if err == nil {
+				fmt.Printf("%s is %s\n", parts[1], path)
 			} else {
 				fmt.Printf("%s: not found\n", parts[1])
 			}

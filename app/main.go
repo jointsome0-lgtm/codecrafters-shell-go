@@ -35,6 +35,7 @@ func main() {
 		}
 
 		command := strings.TrimSpace(parts[0])
+
 		if command == "exit" {
 			break
 		}
@@ -51,7 +52,16 @@ func main() {
 				fmt.Printf("%s: not found\n", parts[1])
 			}
 		} else {
-			fmt.Println(command + ": command not found")
+			if path, err := exec.LookPath(parts[0]); err == nil && path != "" {
+				args := parts[1:]
+				c := exec.Command(path, args...)
+				c.Stdin = os.Stdin
+				c.Stdout = os.Stdout
+				c.Stderr = os.Stderr
+				c.Run()
+			} else {
+				fmt.Println(command + ": command not found")
+			}
 		}
 	}
 }
